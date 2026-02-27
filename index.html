@@ -14,11 +14,23 @@
       min-height: 100vh;
       margin: 0;
       background: #f0f0f0;
+      color: #111;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background: #1a1a2e;
+      color: #eee;
     }
 
     h1 {
       font-size: 2rem;
       margin-bottom: 24px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
     }
 
     button {
@@ -29,10 +41,30 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      transition: background 0.2s;
     }
 
     button:hover {
       background: #e6b800;
+    }
+
+    #themeToggle {
+      background: #555;
+      color: white;
+      padding: 12px 20px;
+    }
+
+    #themeToggle:hover {
+      background: #333;
+    }
+
+    body.dark #themeToggle {
+      background: #ddd;
+      color: #111;
+    }
+
+    body.dark #themeToggle:hover {
+      background: #bbb;
     }
 
     #result {
@@ -53,7 +85,7 @@
       font-size: 1.3rem;
       font-weight: bold;
       color: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     .range1 { background: #fbc400; } /* 1~10 */
@@ -65,7 +97,10 @@
 </head>
 <body>
   <h1>로또 번호 생성기</h1>
-  <button onclick="generate()">번호 생성</button>
+  <div class="btn-row">
+    <button onclick="generate()">번호 생성</button>
+    <button id="themeToggle" onclick="toggleTheme()">🌙 다크모드</button>
+  </div>
   <div id="result"></div>
 
   <script>
@@ -83,6 +118,11 @@
         const cls = range >= 5 ? 'range5' : `range${range}`;
         return `<div class="ball ${cls}">${n}</div>`;
       }).join('');
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      document.getElementById('themeToggle').textContent = isDark ? '☀️ 화이트모드' : '🌙 다크모드';
     }
   </script>
 </body>
