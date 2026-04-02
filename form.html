@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제휴 문의</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 8px;
+      text-align: center;
+    }
+
+    p.sub {
+      text-align: center;
+      color: #777;
+      margin: 0 0 28px;
+      font-size: 0.95rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      transition: border 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #ffcc00;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 13px;
+      background: #ffcc00;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background: #e6b800;
+    }
+
+    .back {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .back a {
+      color: #888;
+      text-decoration: none;
+    }
+
+    .back a:hover {
+      color: #333;
+    }
+
+    /* 전송 완료 메시지 */
+    #thanks {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    #thanks .icon { font-size: 3rem; }
+    #thanks h2 { margin: 12px 0 8px; }
+    #thanks p { color: #777; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="formWrap">
+      <h1>제휴 문의</h1>
+      <p class="sub">협업 및 제휴 관련 문의를 남겨주세요.<br>확인 후 빠르게 연락드리겠습니다.</p>
+
+      <form action="https://formspree.io/f/mwvwnkan" method="POST" onsubmit="handleSubmit(event)">
+        <label for="name">이름 / 회사명</label>
+        <input type="text" id="name" name="name" placeholder="홍길동 / 홍길동 주식회사" required>
+
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="example@email.com" required>
+
+        <label for="type">문의 유형</label>
+        <select id="type" name="type" required>
+          <option value="" disabled selected>선택해주세요</option>
+          <option value="광고/협찬">광고 / 협찬</option>
+          <option value="콘텐츠 제휴">콘텐츠 제휴</option>
+          <option value="기술 협업">기술 협업</option>
+          <option value="기타">기타</option>
+        </select>
+
+        <label for="message">문의 내용</label>
+        <textarea id="message" name="message" placeholder="제휴 제안 내용을 자유롭게 작성해주세요." required></textarea>
+
+        <button type="submit">문의 보내기</button>
+      </form>
+    </div>
+
+    <div id="thanks">
+      <div class="icon">✅</div>
+      <h2>문의가 접수되었습니다!</h2>
+      <p>빠른 시일 내에 이메일로 연락드리겠습니다.</p>
+    </div>
+
+    <div class="back"><a href="index.html">← 메인으로 돌아가기</a></div>
+  </div>
+
+  <script>
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        document.getElementById('formWrap').style.display = 'none';
+        document.getElementById('thanks').style.display = 'block';
+      } else {
+        alert('전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    }
+  </script>
+</body>
+</html>
