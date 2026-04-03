@@ -10,9 +10,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
+      padding: 60px 16px;
       background: #f0f0f0;
       color: #111;
       transition: background 0.3s, color 0.3s;
@@ -174,6 +175,20 @@
     #thanks h2 { margin: 12px 0 8px; }
     #thanks p { color: #777; }
     body.dark #thanks p { color: #aaa; }
+
+    /* 댓글 섹션 */
+    .comments-section {
+      margin-top: 60px;
+      width: 100%;
+      max-width: 800px;
+      padding-bottom: 60px;
+    }
+
+    .comments-section h2 {
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 24px;
+    }
   </style>
 </head>
 <body>
@@ -218,6 +233,21 @@
       <h2>문의가 접수되었습니다!</h2>
       <p>빠른 시일 내에 이메일로 연락드리겠습니다.</p>
     </div>
+  </div>
+
+  <!-- 댓글 섹션 -->
+  <div class="comments-section">
+    <h2>댓글</h2>
+    <div id="disqus_thread"></div>
+    <script>
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://productbuild-10.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </div>
 
   <script>
