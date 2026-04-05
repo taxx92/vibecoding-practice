@@ -60,22 +60,29 @@
       max-width: 320px;
     }
 
-    .btn-start {
+    /* 파일 업로드 영역 */
+    .upload-area {
       margin-top: 8px;
-      padding: 14px 40px;
-      background: #ffcc00;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: bold;
+      width: 280px;
+      height: 160px;
+      border: 2px dashed #ffcc00;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      transition: background 0.2s;
+      background: white;
     }
 
-    .btn-start:hover {
-      background: #e6b800;
-      transform: scale(1.03);
-    }
+    .upload-area:hover { background: #fffbe6; }
+    .upload-area .icon { font-size: 2.5rem; }
+    .upload-area p { font-size: 0.9rem; color: #888; }
+
+    /* 숨겨진 실제 input */
+    #fileInput { display: none; }
 
     /* 분석 화면 */
     #testScreen {
@@ -87,7 +94,10 @@
       max-width: 400px;
     }
 
-    #webcam-container canvas {
+    #previewImg {
+      width: 280px;
+      height: 280px;
+      object-fit: cover;
       border-radius: 20px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
@@ -118,14 +128,19 @@
       gap: 12px;
     }
 
+    #resultImg {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 4px;
+    }
+
     .result-emoji { font-size: 5rem; }
     .result-title { font-size: 1.6rem; font-weight: bold; }
     .result-desc { color: #666; line-height: 1.7; font-size: 0.95rem; }
 
-    .bar-wrap {
-      width: 100%;
-      margin-top: 8px;
-    }
+    .bar-wrap { width: 100%; margin-top: 8px; }
 
     .bar-label {
       display: flex;
@@ -171,23 +186,30 @@
   <a class="back" href="index.html">← 메인으로</a>
 
   <h1>나는 강아지상? 고양이상? 🐾</h1>
-  <p class="subtitle">AI가 당신의 얼굴을 분석해드립니다</p>
+  <p class="subtitle">AI가 사진을 분석해드립니다</p>
 
   <!-- 시작 화면 -->
   <div id="startScreen">
     <div class="animals">🐶🐱</div>
-    <p class="desc">카메라를 켜면 AI가 실시간으로<br>당신의 동물상을 분석합니다.<br>정면을 바라봐 주세요!</p>
-    <button class="btn-start" onclick="init()">카메라 켜고 테스트 시작</button>
+    <p class="desc">사진을 업로드하면 AI가<br>당신의 동물상을 분석합니다!</p>
+
+    <!-- 클릭하면 파일 선택창 열림 -->
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <div class="icon">📁</div>
+      <p>클릭해서 사진 업로드</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
   </div>
 
   <!-- 분석 화면 -->
   <div id="testScreen">
-    <div id="webcam-container"></div>
+    <img id="previewImg" src="" alt="업로드된 사진">
     <p class="analyzing">🔍 분석 중...</p>
   </div>
 
   <!-- 결과 카드 -->
   <div id="resultCard">
+    <img id="resultImg" src="" alt="분석된 사진">
     <div class="result-emoji" id="resultEmoji"></div>
     <div class="result-title" id="resultTitle"></div>
     <div class="result-desc" id="resultDesc"></div>
@@ -207,8 +229,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
   <script>
     const MODEL_URL = "https://teachablemachine.withgoogle.com/models/jbeaGp_X9/";
-    let model, webcam, maxPredictions;
-    let resultShown = false;
+    let model;
 
     // 결과별 설명 메시지
     const info = {
@@ -224,53 +245,46 @@
       }
     };
 
-    async function init() {
+    // 파일이 선택됐을 때 실행
+    async function handleFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // 이미지 미리보기 URL 생성
+      const imageURL = URL.createObjectURL(file);
+
+      // 분석 화면으로 전환
       document.getElementById("startScreen").style.display = "none";
       document.getElementById("testScreen").style.display = "flex";
+      document.getElementById("previewImg").src = imageURL;
 
-      const modelURL = MODEL_URL + "model.json";
-      const metadataURL = MODEL_URL + "metadata.json";
-
-      model = await tmImage.load(modelURL, metadataURL);
-      maxPredictions = model.getTotalClasses();
-
-      webcam = new tmImage.Webcam(280, 280, true);
-      await webcam.setup();
-      await webcam.play();
-      window.requestAnimationFrame(loop);
-
-      document.getElementById("webcam-container").appendChild(webcam.canvas);
-    }
-
-    async function loop() {
-      if (resultShown) return;
-      webcam.update();
-      await predict();
-      window.requestAnimationFrame(loop);
-    }
-
-    async function predict() {
-      const prediction = await model.predict(webcam.canvas);
-
-      // 가장 확률 높은 클래스 찾기
-      let best = prediction[0];
-      for (const p of prediction) {
-        if (p.probability > best.probability) best = p;
+      // 모델 로드 (처음 한 번만)
+      if (!model) {
+        model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
       }
 
-      // 확률이 75% 이상일 때 결과 확정
-      if (best.probability >= 0.75) {
-        resultShown = true;
-        showResult(prediction, best.className);
-      }
+      // 이미지가 완전히 로드된 후 분석
+      const img = document.getElementById("previewImg");
+      img.onload = async () => {
+        const prediction = await model.predict(img);
+
+        // 가장 확률 높은 클래스 찾기
+        let best = prediction[0];
+        for (const p of prediction) {
+          if (p.probability > best.probability) best = p;
+        }
+
+        showResult(prediction, best.className, imageURL);
+      };
     }
 
-    function showResult(prediction, winner) {
-      webcam.stop();
-
+    function showResult(prediction, winner, imageURL) {
       document.getElementById("testScreen").style.display = "none";
       const card = document.getElementById("resultCard");
       card.style.display = "flex";
+
+      // 업로드한 사진 결과 카드에도 표시
+      document.getElementById("resultImg").src = imageURL;
 
       const data = info[winner] || { emoji: "🐾", title: winner, desc: "" };
       document.getElementById("resultEmoji").textContent = data.emoji;
@@ -291,9 +305,8 @@
     }
 
     function retry() {
-      resultShown = false;
       document.getElementById("resultCard").style.display = "none";
-      document.getElementById("webcam-container").innerHTML = "";
+      document.getElementById("fileInput").value = "";
       document.getElementById("startScreen").style.display = "flex";
     }
   </script>
