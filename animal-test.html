@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나는 강아지상? 고양이상?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: #fff8f0;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 60px;
+    }
+
+    .back {
+      align-self: flex-start;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      color: #888;
+      text-decoration: none;
+    }
+    .back:hover { color: #333; }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    /* 시작 화면 */
+    #startScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .animals {
+      font-size: 5rem;
+      letter-spacing: 12px;
+    }
+
+    .desc {
+      text-align: center;
+      line-height: 1.7;
+      color: #555;
+      max-width: 320px;
+    }
+
+    .btn-start {
+      margin-top: 8px;
+      padding: 14px 40px;
+      background: #ffcc00;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-start:hover {
+      background: #e6b800;
+      transform: scale(1.03);
+    }
+
+    /* 분석 화면 */
+    #testScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    #webcam-container canvas {
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .analyzing {
+      font-size: 0.95rem;
+      color: #888;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* 결과 카드 */
+    #resultCard {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .result-emoji { font-size: 5rem; }
+    .result-title { font-size: 1.6rem; font-weight: bold; }
+    .result-desc { color: #666; line-height: 1.7; font-size: 0.95rem; }
+
+    .bar-wrap {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: #555;
+    }
+
+    .bar-bg {
+      background: #f0f0f0;
+      border-radius: 99px;
+      height: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.8s ease;
+    }
+
+    .bar-dog { background: #ffb347; }
+    .bar-cat { background: #a78bfa; }
+
+    .btn-retry {
+      margin-top: 8px;
+      padding: 12px 32px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-retry:hover { background: #e0e0e0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 메인으로</a>
+
+  <h1>나는 강아지상? 고양이상? 🐾</h1>
+  <p class="subtitle">AI가 당신의 얼굴을 분석해드립니다</p>
+
+  <!-- 시작 화면 -->
+  <div id="startScreen">
+    <div class="animals">🐶🐱</div>
+    <p class="desc">카메라를 켜면 AI가 실시간으로<br>당신의 동물상을 분석합니다.<br>정면을 바라봐 주세요!</p>
+    <button class="btn-start" onclick="init()">카메라 켜고 테스트 시작</button>
+  </div>
+
+  <!-- 분석 화면 -->
+  <div id="testScreen">
+    <div id="webcam-container"></div>
+    <p class="analyzing">🔍 분석 중...</p>
+  </div>
+
+  <!-- 결과 카드 -->
+  <div id="resultCard">
+    <div class="result-emoji" id="resultEmoji"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-desc" id="resultDesc"></div>
+
+    <div class="bar-wrap">
+      <div class="bar-label"><span>🐶 강아지상</span><span id="dogPct"></span></div>
+      <div class="bar-bg"><div class="bar-fill bar-dog" id="dogBar" style="width:0%"></div></div>
+
+      <div class="bar-label"><span>🐱 고양이상</span><span id="catPct"></span></div>
+      <div class="bar-bg"><div class="bar-fill bar-cat" id="catBar" style="width:0%"></div></div>
+    </div>
+
+    <button class="btn-retry" onclick="retry()">다시 테스트하기</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <script>
+    const MODEL_URL = "https://teachablemachine.withgoogle.com/models/jbeaGp_X9/";
+    let model, webcam, maxPredictions;
+    let resultShown = false;
+
+    // 결과별 설명 메시지
+    const info = {
+      "Dog": {
+        emoji: "🐶",
+        title: "강아지상이에요!",
+        desc: "활발하고 친근한 매력이 넘쳐요.\n누구와도 잘 어울리는 따뜻한 분위기를 가졌군요!"
+      },
+      "Cat": {
+        emoji: "🐱",
+        title: "고양이상이에요!",
+        desc: "도도하고 신비로운 분위기가 물씬 풍기네요.\n차갑게 보이지만 알고 보면 매력 폭발!"
+      }
+    };
+
+    async function init() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("testScreen").style.display = "flex";
+
+      const modelURL = MODEL_URL + "model.json";
+      const metadataURL = MODEL_URL + "metadata.json";
+
+      model = await tmImage.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+
+      webcam = new tmImage.Webcam(280, 280, true);
+      await webcam.setup();
+      await webcam.play();
+      window.requestAnimationFrame(loop);
+
+      document.getElementById("webcam-container").appendChild(webcam.canvas);
+    }
+
+    async function loop() {
+      if (resultShown) return;
+      webcam.update();
+      await predict();
+      window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+      const prediction = await model.predict(webcam.canvas);
+
+      // 가장 확률 높은 클래스 찾기
+      let best = prediction[0];
+      for (const p of prediction) {
+        if (p.probability > best.probability) best = p;
+      }
+
+      // 확률이 75% 이상일 때 결과 확정
+      if (best.probability >= 0.75) {
+        resultShown = true;
+        showResult(prediction, best.className);
+      }
+    }
+
+    function showResult(prediction, winner) {
+      webcam.stop();
+
+      document.getElementById("testScreen").style.display = "none";
+      const card = document.getElementById("resultCard");
+      card.style.display = "flex";
+
+      const data = info[winner] || { emoji: "🐾", title: winner, desc: "" };
+      document.getElementById("resultEmoji").textContent = data.emoji;
+      document.getElementById("resultTitle").textContent = data.title;
+      document.getElementById("resultDesc").textContent = data.desc;
+
+      // 확률 바 채우기
+      for (const p of prediction) {
+        const pct = Math.round(p.probability * 100);
+        if (p.className === "Dog") {
+          document.getElementById("dogPct").textContent = pct + "%";
+          document.getElementById("dogBar").style.width = pct + "%";
+        } else if (p.className === "Cat") {
+          document.getElementById("catPct").textContent = pct + "%";
+          document.getElementById("catBar").style.width = pct + "%";
+        }
+      }
+    }
+
+    function retry() {
+      resultShown = false;
+      document.getElementById("resultCard").style.display = "none";
+      document.getElementById("webcam-container").innerHTML = "";
+      document.getElementById("startScreen").style.display = "flex";
+    }
+  </script>
+</body>
+</html>
