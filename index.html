@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>로또 번호 생성기</title>
+  <meta name="description" content="로또 번호 자동 생성기, 강아지상·고양이상 AI 동물상 테스트까지! Lucky Tools에서 무료로 즐겨보세요.">
+  <meta name="keywords" content="로또번호생성기, 로또번호추첨, 동물상테스트, 강아지상, 고양이상, AI테스트">
+  <meta property="og:title" content="Lucky Tools — 로또 번호 생성기 & 동물상 테스트">
+  <meta property="og:description" content="무료 로또 번호 생성기와 AI 동물상 테스트를 즐겨보세요.">
+  <meta property="og:type" content="website">
+  <title>Lucky Tools — 로또 번호 생성기 & 동물상 테스트</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3999793603988423"
      crossorigin="anonymous"></script>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      padding: 60px 16px;
-      background: #f0f0f0;
+      background: #f5f5f5;
       color: #111;
       transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     body.dark {
@@ -26,56 +29,164 @@
       color: #eee;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 24px;
-    }
-
-    .btn-row {
+    /* 헤더 */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 14px 24px;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s, border-color 0.3s;
     }
 
-    button {
-      padding: 12px 32px;
-      font-size: 1.1rem;
-      background: #ffcc00;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    body.dark header {
+      background: #16213e;
+      border-bottom-color: #333;
+    }
+
+    .logo {
+      font-size: 1.2rem;
       font-weight: bold;
-      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
     }
 
-    button:hover {
-      background: #e6b800;
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
     }
+
+    nav a {
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: #555;
+      transition: color 0.2s;
+    }
+
+    body.dark nav a { color: #bbb; }
+    nav a:hover { color: #111; }
+    body.dark nav a:hover { color: #fff; }
 
     #themeToggle {
-      background: #555;
-      color: white;
-      padding: 12px 20px;
-    }
-
-    #themeToggle:hover {
-      background: #333;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #555;
+      transition: all 0.2s;
     }
 
     body.dark #themeToggle {
-      background: #ddd;
-      color: #111;
+      border-color: #555;
+      color: #bbb;
     }
 
-    body.dark #themeToggle:hover {
-      background: #bbb;
+    /* 메인 콘텐츠 */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px 80px;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    body.dark .hero p { color: #aaa; }
+
+    /* 로또 섹션 */
+    .lotto-section {
+      width: 100%;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      margin-bottom: 40px;
+    }
+
+    body.dark .lotto-section {
+      background: #16213e;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .lotto-section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .lotto-section .desc {
+      color: #777;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    body.dark .lotto-section .desc { color: #aaa; }
+
+    .lotto-info {
+      background: #fffbe6;
+      border-left: 4px solid #ffcc00;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    body.dark .lotto-info {
+      background: #2a2510;
+      color: #bbb;
+    }
+
+    .btn-generate {
+      display: inline-block;
+      padding: 13px 40px;
+      background: #ffcc00;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-generate:hover {
+      background: #e6b800;
+      transform: scale(1.03);
     }
 
     #result {
-      margin-top: 32px;
+      margin-top: 24px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
+      min-height: 56px;
     }
 
     .ball {
@@ -85,36 +196,86 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    .range1 { background: #fbc400; } /* 1~10 */
-    .range2 { background: #69c8f2; } /* 11~20 */
-    .range3 { background: #ff7272; } /* 21~30 */
-    .range4 { background: #aaa; }    /* 31~40 */
-    .range5 { background: #b0d840; } /* 41~45 */
+    .range1 { background: #fbc400; }
+    .range2 { background: #69c8f2; }
+    .range3 { background: #ff7272; }
+    .range4 { background: #aaa; }
+    .range5 { background: #b0d840; }
+
+    /* 도구 카드 목록 */
+    .tools-section {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    .tools-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      color: #888;
+      font-weight: normal;
+    }
+
+    .tool-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    body.dark .tool-card {
+      background: #16213e;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .tool-icon { font-size: 2.4rem; }
+
+    .tool-info h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .tool-info p { font-size: 0.88rem; color: #777; }
+    body.dark .tool-info p { color: #aaa; }
 
     /* 제휴 문의 폼 */
     .form-section {
-      margin-top: 60px;
       width: 100%;
-      max-width: 480px;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      margin-bottom: 48px;
+    }
+
+    body.dark .form-section {
+      background: #16213e;
     }
 
     .form-section h2 {
       font-size: 1.4rem;
-      text-align: center;
       margin-bottom: 6px;
     }
 
     .form-section p.sub {
-      text-align: center;
       color: #777;
       font-size: 0.9rem;
-      margin: 0 0 20px;
+      margin-bottom: 24px;
+      line-height: 1.6;
     }
 
     body.dark .form-section p.sub { color: #aaa; }
@@ -135,9 +296,8 @@
       border-radius: 8px;
       font-size: 1rem;
       margin-bottom: 16px;
-      background: white;
+      background: #fafafa;
       color: #111;
-      box-sizing: border-box;
       transition: border 0.2s;
     }
 
@@ -164,8 +324,16 @@
     .form-section button[type="submit"] {
       width: 100%;
       padding: 13px;
+      background: #ffcc00;
+      border: none;
+      border-radius: 8px;
       font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
     }
+
+    .form-section button[type="submit"]:hover { background: #e6b800; }
 
     #thanks {
       display: none;
@@ -176,82 +344,149 @@
     #thanks .icon { font-size: 3rem; }
     #thanks h2 { margin: 12px 0 8px; }
     #thanks p { color: #777; }
-    body.dark #thanks p { color: #aaa; }
 
-    /* 댓글 섹션 */
+    /* 댓글 */
     .comments-section {
-      margin-top: 60px;
       width: 100%;
-      max-width: 800px;
-      padding-bottom: 60px;
+      max-width: 760px;
+      margin-bottom: 48px;
     }
 
     .comments-section h2 {
-      font-size: 1.4rem;
-      text-align: center;
-      margin-bottom: 24px;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
+
+    /* 푸터 */
+    footer {
+      background: #fff;
+      border-top: 1px solid #e5e5e5;
+      padding: 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+      transition: background 0.3s;
+    }
+
+    body.dark footer {
+      background: #16213e;
+      border-top-color: #333;
+    }
+
+    footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    footer a:hover { color: #555; }
   </style>
 </head>
 <body>
-  <h1>로또 번호 생성기</h1>
-  <div class="btn-row">
-    <button onclick="generate()">번호 생성</button>
-    <button id="themeToggle" onclick="toggleTheme()">🌙 다크모드</button>
-  </div>
-  <a href="animal-test.html" style="margin-top:16px; font-size:0.95rem; color:#888; text-decoration:none;">🐾 나는 강아지상? 고양이상? 테스트 →</a>
-  <div id="result"></div>
+  <!-- 헤더 -->
+  <header>
+    <a class="logo" href="index.html">🍀 Lucky Tools</a>
+    <nav>
+      <a href="#lotto">로또 생성기</a>
+      <a href="animal-test.html">동물상 테스트</a>
+      <a href="privacy-policy.html">개인정보처리방침</a>
+      <button id="themeToggle" onclick="toggleTheme()">🌙 다크모드</button>
+    </nav>
+  </header>
 
-  <!-- 제휴 문의 폼 -->
-  <div class="form-section">
-    <h2>제휴 문의</h2>
-    <p class="sub">협업 및 제휴 관련 문의를 남겨주세요.<br>확인 후 빠르게 연락드리겠습니다.</p>
-
-    <div id="formWrap">
-      <form action="https://formspree.io/f/mwvwnkan" method="POST" onsubmit="handleSubmit(event)">
-        <label for="name">이름 / 회사명</label>
-        <input type="text" id="name" name="name" placeholder="홍길동 / 홍길동 주식회사" required>
-
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" placeholder="example@email.com" required>
-
-        <label for="type">문의 유형</label>
-        <select id="type" name="type" required>
-          <option value="" disabled selected>선택해주세요</option>
-          <option value="광고/협찬">광고 / 협찬</option>
-          <option value="콘텐츠 제휴">콘텐츠 제휴</option>
-          <option value="기술 협업">기술 협업</option>
-          <option value="기타">기타</option>
-        </select>
-
-        <label for="message">문의 내용</label>
-        <textarea id="message" name="message" placeholder="제휴 제안 내용을 자유롭게 작성해주세요." required></textarea>
-
-        <button type="submit">문의 보내기</button>
-      </form>
+  <main>
+    <!-- 히어로 -->
+    <div class="hero">
+      <h1>🍀 Lucky Tools</h1>
+      <p>무료 로또 번호 생성기, AI 동물상 테스트까지.<br>간편하고 재미있는 온라인 도구 모음입니다.</p>
     </div>
 
-    <div id="thanks">
-      <div class="icon">✅</div>
-      <h2>문의가 접수되었습니다!</h2>
-      <p>빠른 시일 내에 이메일로 연락드리겠습니다.</p>
-    </div>
-  </div>
+    <!-- 로또 섹션 -->
+    <section class="lotto-section" id="lotto">
+      <h2>🎱 로또 번호 생성기</h2>
+      <p class="desc">1부터 45까지의 숫자 중 6개를 무작위로 추첨합니다. 매주 토요일 오후 8시 35분에 추첨되는 대한민국 로또 6/45에 맞게 설계되었습니다.</p>
 
-  <!-- 댓글 섹션 -->
-  <div class="comments-section">
-    <h2>댓글</h2>
-    <div id="disqus_thread"></div>
-    <script>
-      (function() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://productbuild-10.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
+      <div class="lotto-info">
+        💡 번호는 완전한 무작위(Random)로 생성됩니다. 당첨 확률은 약 1/8,145,060이며, 생성된 번호는 통계적으로 동일한 확률을 가집니다.
+      </div>
+
+      <button class="btn-generate" onclick="generate()">번호 생성하기</button>
+      <div id="result"></div>
+    </section>
+
+    <!-- 다른 도구 -->
+    <section class="tools-section">
+      <h2>다른 도구 둘러보기</h2>
+      <a class="tool-card" href="animal-test.html">
+        <div class="tool-icon">🐾</div>
+        <div class="tool-info">
+          <h3>AI 동물상 테스트</h3>
+          <p>사진을 올리면 AI가 강아지상인지 고양이상인지 분석해드립니다.</p>
+        </div>
+      </a>
+    </section>
+
+    <!-- 제휴 문의 폼 -->
+    <section class="form-section">
+      <h2>📬 제휴 문의</h2>
+      <p class="sub">광고, 협찬, 콘텐츠 제휴 등 비즈니스 관련 문의를 남겨주세요.<br>확인 후 빠르게 연락드리겠습니다.</p>
+
+      <div id="formWrap">
+        <form action="https://formspree.io/f/mwvwnkan" method="POST" onsubmit="handleSubmit(event)">
+          <label for="name">이름 / 회사명</label>
+          <input type="text" id="name" name="name" placeholder="홍길동 / 홍길동 주식회사" required>
+
+          <label for="email">이메일</label>
+          <input type="email" id="email" name="email" placeholder="example@email.com" required>
+
+          <label for="type">문의 유형</label>
+          <select id="type" name="type" required>
+            <option value="" disabled selected>선택해주세요</option>
+            <option value="광고/협찬">광고 / 협찬</option>
+            <option value="콘텐츠 제휴">콘텐츠 제휴</option>
+            <option value="기술 협업">기술 협업</option>
+            <option value="기타">기타</option>
+          </select>
+
+          <label for="message">문의 내용</label>
+          <textarea id="message" name="message" placeholder="제휴 제안 내용을 자유롭게 작성해주세요." required></textarea>
+
+          <button type="submit">문의 보내기</button>
+        </form>
+      </div>
+
+      <div id="thanks">
+        <div class="icon">✅</div>
+        <h2>문의가 접수되었습니다!</h2>
+        <p>빠른 시일 내에 이메일로 연락드리겠습니다.</p>
+      </div>
+    </section>
+
+    <!-- 댓글 -->
+    <div class="comments-section">
+      <h2>💬 댓글</h2>
+      <div id="disqus_thread"></div>
+      <script>
+        (function() {
+          var d = document, s = d.createElement('script');
+          s.src = 'https://productbuild-10.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer>
+    <p>© 2025 Lucky Tools</p>
+    <p style="margin-top:8px;">
+      <a href="index.html">홈</a>
+      <a href="animal-test.html">동물상 테스트</a>
+      <a href="privacy-policy.html">개인정보처리방침</a>
+    </p>
+  </footer>
 
   <script>
     function generate() {
@@ -259,9 +494,7 @@
       while (numbers.size < 6) {
         numbers.add(Math.floor(Math.random() * 45) + 1);
       }
-
       const sorted = [...numbers].sort((a, b) => a - b);
-
       const result = document.getElementById('result');
       result.innerHTML = sorted.map(n => {
         const range = Math.ceil(n / 10);
