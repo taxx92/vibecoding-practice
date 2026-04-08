@@ -69,6 +69,48 @@
       transition: color 0.2s;
     }
 
+    /* 아티클 섹션 */
+    .articles-section {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    .articles-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      color: #888;
+      font-weight: normal;
+    }
+
+    .article-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-bottom: 12px;
+    }
+
+    body.dark .article-card {
+      background: #16213e;
+    }
+
+    .article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .article-icon { font-size: 2rem; flex-shrink: 0; }
+    .article-info h3 { font-size: 1rem; margin-bottom: 4px; }
+    .article-info p { font-size: 0.85rem; color: #777; margin: 0; }
+    body.dark .article-info p { color: #aaa; }
+
     body.dark nav a { color: #bbb; }
     nav a:hover { color: #111; }
     body.dark nav a:hover { color: #fff; }
@@ -388,9 +430,10 @@
   <header>
     <a class="logo" href="index.html">🍀 Lucky Tools</a>
     <nav>
-      <a href="#lotto">로또 생성기</a>
+      <a href="lotto-guide.html">로또 가이드</a>
+      <a href="animal-guide.html">동물상 가이드</a>
       <a href="animal-test.html">동물상 테스트</a>
-      <a href="privacy-policy.html">개인정보처리방침</a>
+      <a href="about.html">소개</a>
       <button id="themeToggle" onclick="toggleTheme()">🌙 다크모드</button>
     </nav>
   </header>
@@ -413,6 +456,25 @@
 
       <button class="btn-generate" onclick="generate()">번호 생성하기</button>
       <div id="result"></div>
+    </section>
+
+    <!-- 아티클 -->
+    <section class="articles-section">
+      <h2>읽어보면 도움이 되는 글</h2>
+      <a class="article-card" href="lotto-guide.html">
+        <div class="article-icon">🎱</div>
+        <div class="article-info">
+          <h3>로또 완벽 가이드 — 당첨 확률부터 번호 전략까지</h3>
+          <p>로또 1등 확률은 얼마나 될까? 자동과 수동 중 어떤 게 유리할까? 로또에 대해 알아야 할 모든 것.</p>
+        </div>
+      </a>
+      <a class="article-card" href="animal-guide.html">
+        <div class="article-icon">🐾</div>
+        <div class="article-info">
+          <h3>동물상 완벽 가이드 — 강아지상 vs 고양이상 특징 비교</h3>
+          <p>강아지상과 고양이상의 특징, 성격, AI로 분석하는 방법까지 한눈에 정리.</p>
+        </div>
+      </a>
     </section>
 
     <!-- 다른 도구 -->
@@ -484,6 +546,9 @@
     <p>© 2025 Lucky Tools</p>
     <p style="margin-top:8px;">
       <a href="index.html">홈</a>
+      <a href="about.html">소개</a>
+      <a href="lotto-guide.html">로또 가이드</a>
+      <a href="animal-guide.html">동물상 가이드</a>
       <a href="animal-test.html">동물상 테스트</a>
       <a href="privacy-policy.html">개인정보처리방침</a>
     </p>
